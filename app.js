@@ -51,10 +51,10 @@ var bot = module.exports = new builder.UniversalBot(connector, [
 
             // When calling another dialog, you can pass arguments in the second parameter
             session.beginDialog('getVisitReason', { farm: farm });
-            if (results.response) {
-                var visitReason = session.privateConversationData.visitReason = results.response;
-                session.beginDialog('getAnimalType');
-            }
+ //           if (results.response) {
+ //               var visitReason = session.privateConversationData.visitReason = results.response;
+ //               session.beginDialog('getAnimalType');
+ //           }
         } else {
             // no valid response received - End the conversation
             session.endConversation(`Sorry, I didn't understand the response. Let's start over.`);
@@ -66,8 +66,8 @@ var bot = module.exports = new builder.UniversalBot(connector, [
 
         // check for a response
         if (results.response) {
-            var aniamlType = ession.privateConversationData.animalType = results.response;
-            var visitReason = session.privateConversationData.visitReason;
+   //         var aniamlType = session.privateConversationData.animalType = results.response;
+            var visitReason = session.privateConversationData.visitReason = results.response;
             var farm = session.privateConversationData.farm;
 
 
@@ -78,11 +78,6 @@ var bot = module.exports = new builder.UniversalBot(connector, [
         }
     },
 ]);
-
-
-
-
-
 
 bot.dialog('getFarm', [
     (session, args, next) => {
