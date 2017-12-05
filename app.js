@@ -125,7 +125,8 @@ bot.dialog('getVisitReason', [
         var ReasonLabels = {
             CQA: 'CQA',
             DxInv: 'Disease Investigation',
-            HHC: 'Herd Health Check'
+            HHC: 'Herd Health Check',
+            Phone : 'Phone Call'
         };
 
         // prompt user
@@ -133,7 +134,7 @@ bot.dialog('getVisitReason', [
         builder.Prompts.choice(
             session,
             `Why did you visit ${farm}?`,
-            [ReasonLabels.CQA, ReasonLabels.DxInv, ReasonLabels.HHC],
+            [ReasonLabels.CQA, ReasonLabels.DxInv, ReasonLabels.HHC, ReasonLabels.Phone],
             {
                 maxRetries: 3,
                 retryPrompt: 'Not a valid option'
