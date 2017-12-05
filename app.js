@@ -51,8 +51,10 @@ var bot = module.exports = new builder.UniversalBot(connector, [
 
             // When calling another dialog, you can pass arguments in the second parameter
             session.beginDialog('getVisitReason', { farm: farm });
-            var visitReason = session.privateConversationData.farm = results.response;
-            session.beginDialog('getAnimalType');
+            if (results.response) {
+                var visitReason = session.privateConversationData.visitReason = results.response;
+                session.beginDialog('getAnimalType');
+            }
         } else {
             // no valid response received - End the conversation
             session.endConversation(`Sorry, I didn't understand the response. Let's start over.`);
