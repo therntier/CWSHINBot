@@ -51,6 +51,8 @@ var bot = module.exports = new builder.UniversalBot(connector, [
 
             // When calling another dialog, you can pass arguments in the second parameter
             session.beginDialog('getVisitReason', { farm: farm });
+            var visitReason = session.privateConversationData.farm = results.response;
+            session.beginDialog('getAnimalType');
         } else {
             // no valid response received - End the conversation
             session.endConversation(`Sorry, I didn't understand the response. Let's start over.`);
@@ -62,8 +64,10 @@ var bot = module.exports = new builder.UniversalBot(connector, [
 
         // check for a response
         if (results.response) {
-            var visitReason = session.privateConversationData.visitReason = results.response;
+            var aniamlType = ession.privateConversationData.animalType = results.response;
+            var visitReason = session.privateConversationData.visitReason;
             var farm = session.privateConversationData.farm;
+
 
             session.endConversation(`You visited ${farm} because of a ${visitReason}`);
         } else {
@@ -72,6 +76,11 @@ var bot = module.exports = new builder.UniversalBot(connector, [
         }
     },
 ]);
+
+
+
+
+
 
 bot.dialog('getFarm', [
     (session, args, next) => {
@@ -149,6 +158,49 @@ bot.dialog('getVisitReason', [
         // Return control to calling dialog
          // Pass the visitReason in the response property of results
          session.endDialogWithResult({ response: visitReason.trim() });
+        
+    }
+]);
+
+bot.dialog('getAnimalType', [
+    (session, args, next) => {
+        var farm = session.dialogData.farm = 'User';
+
+        if (args) {
+            // store reprompt flag
+            session.dialogData.isReprompt = args.isReprompt;
+
+            // retrieve name
+            farm = session.dialogData.farm = args.farm;
+        }
+
+        var AnimalLabel = {
+            Sows: 'Sows',
+            Boars: 'Boars',
+            Piglets: 'Piglets',
+            Nursery : 'Nursery'
+        };
+
+        // prompt user
+
+        builder.Prompts.choice(
+            session,
+            `What animal type did you inspect?`,
+            AnimalLabel,
+            {
+                maxRetries: 3,
+                retryPrompt: 'Not a valid option'
+            });
+
+    },
+    (session, results, next) => {
+        var animalType = results.response.entity;
+
+
+        // Valid visitReason received
+        // Return control to calling dialog
+         // Pass the visitReason in the response property of results
+         session.endDialogWithResult({ response: animalType.trim() });
         
     }
 ]);
