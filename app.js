@@ -51,27 +51,39 @@ var bot = module.exports = new builder.UniversalBot(connector, [
 
             // When calling another dialog, you can pass arguments in the second parameter
             session.beginDialog('getVisitReason', { farm: farm });
- //           if (results.response) {
- //               var visitReason = session.privateConversationData.visitReason = results.response;
- //               session.beginDialog('getAnimalType');
- //           }
         } else {
             // no valid response received - End the conversation
             session.endConversation(`Sorry, I didn't understand the response. Let's start over.`);
         }
     },
+
     (session, results, next) => {
         // executed when getVisitReason dialog completes
         // results parameter contains the object passed into endDialogWithResults
 
         // check for a response
         if (results.response) {
-   //         var aniamlType = session.privateConversationData.animalType = results.response;
             var visitReason = session.privateConversationData.visitReason = results.response;
+            // When calling another dialog, you can pass arguments in the second parameter
+            session.beginDialog('getAnimalType');
+        } else {
+            // no valid response received - End the conversation
+            session.endConversation(`Sorry, I didn't understand the response. Let's start over.`);
+        }
+    },
+
+
+
+    (session, results, next) => {
+        // executed when getAnimalType dialog completes
+        // results parameter contains the object passed into endDialogWithResults
+
+        // check for a response
+        if (results.response) {
+            var animalType = session.privateConversationData.animalType = results.response;
+            var visitReason = session.privateConversationData.visitReason;
             var farm = session.privateConversationData.farm;
-
-
-            session.endConversation(`You visited ${farm} because of a ${visitReason}`);
+            session.endConversation(`You visited ${farm} because of a ${visitReason} on animal type ${animalType}`);
         } else {
             // no valid response received - End the conversation
             session.endConversation(`Sorry, I didn't understand the response. Let's start over.`);
@@ -194,9 +206,9 @@ bot.dialog('getAnimalType', [
         var animalType = results.response.entity;
 
 
-        // Valid visitReason received
+        // Valid animalType received
         // Return control to calling dialog
-         // Pass the visitReason in the response property of results
+         // Pass the aniumaltype in the response property of results
          session.endDialogWithResult({ response: animalType.trim() });
         
     }
