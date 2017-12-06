@@ -83,7 +83,7 @@ var bot = module.exports = new builder.UniversalBot(connector, [
             var animalType = session.privateConversationData.animalType = results.response;
             var visitReason = session.privateConversationData.visitReason;
             var farm = session.privateConversationData.farm;
-            session.endConversation(`You visited ${farm} because of a ${visitReason} on animal type ${animalType}`);
+            session.endConversation(`You visited ${farm} because of a ${visitReason} on ${animalType}`);
         } else {
             // no valid response received - End the conversation
             session.endConversation(`Sorry, I didn't understand the response. Let's start over.`);
